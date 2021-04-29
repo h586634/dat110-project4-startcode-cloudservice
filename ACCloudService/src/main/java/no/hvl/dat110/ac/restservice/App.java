@@ -43,7 +43,7 @@ public class App {
 		 	return gson.toJson("IoT Access Control Device");
 		});
 		
-		post("/accessdevice/log", (req, res) -> {
+		post("/accessdevice/log/", (req, res) -> {
 
 			Gson gson = new Gson();
 			
@@ -60,7 +60,7 @@ public class App {
 			return accesslog.toJson();
 		});
 
-		get("/accessdevice/log/{id}", (req, res) -> {
+		get("/accessdevice/log/:id", (req, res) -> {
 
 			Gson gson = new Gson();
 
@@ -80,7 +80,7 @@ public class App {
 			
 			int[] newCode = gson.fromJson(req.body(), AccessCode.class)
 			.getAccesscode();
-			
+
 			accesscode.setAccesscode(newCode);
 
 			return gson.toJson(accesscode);
