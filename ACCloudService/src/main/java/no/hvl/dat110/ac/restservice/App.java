@@ -60,14 +60,40 @@ public class App {
 			return accesslog.toJson();
 		});
 
+		get("/accessdevice/log/{id}", (req, res) -> {
+
+			Gson gson = new Gson();
+
+			int id = Integer.parseInt(req.params("id"));
+
+			AccessEntry entry = accesslog.get(id);
+
+			if (entry == null) res.status(404);
+
+			return entry != null ? gson.toJson(entry) : gson.toJson("There are no entries with id " + id);
+		});
+
 		// TODO: implement the routes required for the access control service
 		// as per the HTTP/REST operations describined in the project description
 		put("/accessdevice/code", (req, res) -> {
 			Gson gson = new Gson();
 			
-			accesscode = gson.fromJson(req.body(), AccessCode.class);
+			int[] newCode = gson.fromJson(req.body(), AccessCode.class)
+			.getAccesscode();
+			
+			accesscode.setAccesscode(newCode);
 
 			return gson.toJson(accesscode);
+		});
+
+		get("/accessdevice/code", (req, res) -> {
+			return new Gson().toJson(accesscode);
+		});
+
+		delete("/accessdevice/log/", (req, res) -> {
+			accesslog.clear();
+
+			return accesslog.toJson();
 		});
 
     }
