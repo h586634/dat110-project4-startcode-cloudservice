@@ -20,27 +20,36 @@ public class AccessLog {
 	public int add(String message) {
 		
 		int id = 0;
-		
+		id = cid.get();
+		AccessEntry ae = new AccessEntry(id, message);
+		log.put(id, ae);
+				
+		cid.incrementAndGet();
 		return id;
 	}
 		
 	// TODO: retrieve a specific access entry from the log
 	public AccessEntry get(int id) {
 		
-		return null;
+		return log.get(id);
 		
 	}
 	
 	// TODO: clear the access entry log
 	public void clear() {
+	
+		log.clear();
 		
+		cid.set(0);
 	}
 	
 	// TODO: return JSON representation of the access log
-	public String toJson () {
-    	
+	public String toJson() {
+    	Gson gs = new Gson();
+		
 		String json = null;
-    	
+		
+		json = gs.toJson(log.values());
     	return json;
     }
 }
