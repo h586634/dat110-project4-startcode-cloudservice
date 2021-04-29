@@ -43,9 +43,33 @@ public class App {
 		 	return gson.toJson("IoT Access Control Device");
 		});
 		
+		post("/accessdevice/log", (req, res) -> {
+
+			Gson gson = new Gson();
+			
+			String msg = gson.fromJson(req.body(), AccessMessage.class)
+			.getMessage();
+			
+			int id = accesslog.add(msg);
+			AccessEntry entry = new AccessEntry(id, msg);
+
+			return gson.toJson(entry);
+		});
+
+		get("/accessdevice/log/", (req, res) -> {
+			return accesslog.toJson();
+		});
+
 		// TODO: implement the routes required for the access control service
 		// as per the HTTP/REST operations describined in the project description
-		
+		put("/accessdevice/code", (req, res) -> {
+			Gson gson = new Gson();
+			
+			accesscode = gson.fromJson(req.body(), AccessCode.class);
+
+			return gson.toJson(accesscode);
+		});
+
     }
     
 }
